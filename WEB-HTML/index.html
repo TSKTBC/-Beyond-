@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyAbroad - 留学サポートプラットフォーム</title>
+    <meta name="description" content="StudyAbroadは世界中の提携校から最適な留学先を見つけ、専門カウンセラーがあなたの留学を完全サポートする留学プラットフォームです。">
+    <meta name="keywords" content="留学,語学留学,海外留学,カナダ留学,オーストラリア留学">
+    <meta property="og:title" content="StudyAbroad - 留学サポートプラットフォーム">
+    <meta property="og:description" content="世界中の提携校から最適な留学先を見つけ、専門カウンセラーがあなたの留学を完全サポート">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: 'hsl(var(--border))',
+                        input: 'hsl(var(--input))',
+                        ring: 'hsl(var(--ring))',
+                        background: 'hsl(var(--background))',
+                        foreground: 'hsl(var(--foreground))',
+                        primary: {
+                            DEFAULT: 'hsl(var(--primary))',
+                            foreground: 'hsl(var(--primary-foreground))'
+                        },
+                        secondary: {
+                            DEFAULT: 'hsl(var(--secondary))',
+                            foreground: 'hsl(var(--secondary-foreground))'
+                        },
+                        destructive: {
+                            DEFAULT: 'hsl(var(--destructive))',
+                            foreground: 'hsl(var(--destructive-foreground))'
+                        },
+                        muted: {
+                            DEFAULT: 'hsl(var(--muted))',
+                            foreground: 'hsl(var(--muted-foreground))'
+                        },
+                        accent: {
+                            DEFAULT: 'hsl(var(--accent))',
+                            foreground: 'hsl(var(--accent-foreground))'
+                        },
+                        card: {
+                            DEFAULT: 'hsl(var(--card))',
+                            foreground: 'hsl(var(--card-foreground))'
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+        }
+
+        * {
+            border-color: hsl(var(--border));
+        }
+
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .tab-active {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .tab-inactive {
+            background-color: transparent;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .tab-inactive:hover {
+            background-color: hsl(var(--muted));
+        }
+
+        .card {
+            background-color: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid hsl(var(--border));
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: hsl(var(--accent));
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .loading {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .step {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .step.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .quote-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold gradient-bg bg-clip-text text-transparent">
+                        StudyAbroad
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 desktop-nav">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('home')">ホーム</a>
+                    <a href="#community" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('community')">コミュニティ</a>
+                    <a href="#quote" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('quote')">見積もり</a>
+                    <a href="#partners" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('partners')">提携校</a>
+                    <a href="#events" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('events')">イベント</a>
+                    <a href="#learning" class="text-gray-700 hover:text-blue-600 transition-colors" onclick="showSection('learning')">英語学習</a>
+                </nav>
+
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button type="button" class="btn-secondary" onclick="showSection('signin')">ログイン</button>
+                    <button type="button" class="btn-primary" onclick="showSection('signup')">新規登録</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button type="button" class="md:hidden p-2" onclick="toggleMobileMenu()" aria-label="メニューを開く">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden py-4 border-t">
+                <div class="space-y-2">
+                    <a href="#home" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('home'); toggleMobileMenu()">ホーム</a>
+                    <a href="#community" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('community'); toggleMobileMenu()">コミュニティ</a>
+                    <a href="#quote" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('quote'); toggleMobileMenu()">見積もり</a>
+                    <a href="#partners" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('partners'); toggleMobileMenu()">提携校</a>
+                    <a href="#events" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('events'); toggleMobileMenu()">イベント</a>
+                    <a href="#learning" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('learning'); toggleMobileMenu()">英語学習</a>
+                    <hr class="my-2">
+                    <a href="#signin" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('signin'); toggleMobileMenu()">ログイン</a>
+                    <a href="#signup" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="showSection('signup'); toggleMobileMenu()">新規登録</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <!-- Hero Section -->
+            <div class="hero-gradient text-white py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        夢の留学を<br>
+                        <span class="text-yellow-300">現実に</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 text-blue-100">
+                        世界中の提携校から最適な留学先を見つけ、<br>
+                        専門カウンセラーがあなたの留学を完全サポート
+                    </p>
+                    <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                        <button type="button" class="w-full sm:w-auto bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors" onclick="showSection('quote')">
+                            無料見積もりを始める
+                        </button>
+                        <button type="button" class="w-full sm:w-auto border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors" onclick="showSection('consultation')">
+                            カウンセリング予約
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="py-20 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                            なぜStudyAbroadが選ばれるのか
+                        </h2>
+                        <p class="text-xl text-gray-600">
+                            10,000人以上の留学実績と信頼のサポート体制
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">世界500校以上の提携</h3>
+                            <p class="text-gray-600">アメリカ、カナダ、オーストラリア、イギリスなど主要留学先の厳選された学校と提携</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">専門カウンセラー</h3>
+                            <p class="text-gray-600">留学経験豊富な専門カウンセラーが、出発前から帰国まで手厚くサポート</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">安心の成功保証</h3>
+                            <p class="text-gray-600">ビザ取得率99.8%、学校手配成功率100%の実績で安心の留学をお約束</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="py-20 bg-blue-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        今すぐ留学の第一歩を踏み出そう
+                    </h2>
+                    <p class="text-xl mb-8 text-blue-100">
+                        無料カウンセリングで、あなたにぴったりの留学プランを見つけましょう
+                    </p>
+                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors" onclick="showSection('consultation')">
+                        無料カウンセリングを予約
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section id="community" class="section hide">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">留学コミュニティ</h1>
+                    <p class="text-gray-600">留学体験談やSNS投稿を一つの場所で。質問、交流、情報共有を通じて留学の準備を進めましょう。</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="border-b border-gray-200 mb-8">
+                    <div class="flex space-x-8">
+                        <button type="button" class="tab-active px-4 py-2 rounded-t-lg" onclick="showCommunityTab('timeline')" id="timeline-tab">タイムライン</button>
+                        <button type="button" class="tab-inactive px-4 py-2 rounded-t-lg" onclick="showCommunityTab('blog')" id="blog-tab">ブログ投稿</button>
+                        <button type="button" class="tab-inactive px-4 py-2 rounded-t-lg" onclick="showCommunityTab('sns')" id="sns-tab">SNS投稿</button>
+                        <button type="button" class="tab-inactive px-4 py-2 rounded-t-lg" onclick="showCommunityTab('create')" id="create-tab">投稿作成</button>
+                    </div>
+                </div>
+
+                <!-- Search and Filters -->
+                <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="投稿を検索..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="search-input">
+                    </div>
+                    <select name="category" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" id="category-filter">
+                        <option value="">すべてのカテゴリ</option>
+                        <option value="国別情報">国別情報</option>
+                        <option value="語学・テスト">語学・テスト</option>
+                        <option value="留学準備">留学準備</option>
+                        <option value="ビザ情報">ビザ情報</option>
+                        <option value="体験談">体験談</option>
+                        <option value="生活情報">生活情報</option>
+                    </select>
+                </div>
+
+                <!-- Content Tabs -->
+                <div id="timeline-content" class="tab-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Timeline Posts -->
+                            <div class="card p-6">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                        田
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <h3 class="font-semibold">田中さん</h3>
+                                            <span class="text-sm text-gray-500">2時間前</span>
+                                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">体験談</span>
+                                        </div>
+                                        <p class="text-gray-700 mb-4">カナダでの語学留学が終了しました！3ヶ月間でTOEICスコアが200点アップ。現地の友達もたくさんできて、本当に充実した時間でした。次はワーホリに挑戦予定です🇨🇦</p>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                                </svg>
+                                                <span>24</span>
+                                            </button>
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12a8 8 0 018-8c4.418 0 8 3.582 8 8z"></path>
+                                                </svg>
+                                                <span>12</span>
+                                            </button>
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                                </svg>
+                                                <span>シェア</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card p-6">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                        佐
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <h3 class="font-semibold">佐藤さん</h3>
+                                            <span class="text-sm text-gray-500">5時間前</span>
+                                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">留学準備</span>
+                                        </div>
+                                        <p class="text-gray-700 mb-4">オーストラリア留学のビザ申請が完了しました！来月出発予定です。現地での生活についてアドバイスがあれば教えてください😊</p>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                                </svg>
+                                                <span>18</span>
+                                            </button>
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12a8 8 0 018-8c4.418 0 8 3.582 8 8z"></path>
+                                                </svg>
+                                                <span>7</span>
+                                            </button>
+                                            <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                                </svg>
+                                                <span>シェア</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Trending Tags -->
+                            <div class="card p-6">
+                                <h3 class="font-semibold text-lg mb-4">人気のタグ</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded cursor-pointer hover:bg-blue-200">カナダ</span>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded cursor-pointer hover:bg-green-200">オーストラリア</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded cursor-pointer hover:bg-purple-200">IELTS</span>
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded cursor-pointer hover:bg-orange-200">TOEFL</span>
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded cursor-pointer hover:bg-red-200">語学留学</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded cursor-pointer hover:bg-yellow-200">ワーキングホリデー</span>
+                                </div>
+                            </div>
+
+                            <!-- Community Stats -->
+                            <div class="card p-6">
+                                <h3 class="font-semibold text-lg mb-4">コミュニティ統計</h3>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">総投稿数</span>
+                                        <span class="font-semibold text-blue-600">1,234</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">アクティブユーザー</span>
+                                        <span class="font-semibold text-green-600">456</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">今月の新規投稿</span>
+                                        <span class="font-semibold text-green-600">+23</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="blog-content" class="tab-content hide">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card overflow-hidden">
+                            <div class="h-48 bg-gradient-to-r from-blue-400 to-purple-500"></div>
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <span>2024年3月15日</span>
+                                    <span class="mx-2">•</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">体験談</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3">カナダ留学で学んだ3つのこと</h3>
+                                <p class="text-gray-600 mb-4">バンクーバーでの6ヶ月間の語学留学体験談。文化の違い、英語学習のコツ、現地での生活について詳しく紹介します...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-blue-500 rounded-full"></div>
+                                        <span class="text-sm text-gray-600">田中さん</span>
+                                    </div>
+                                    <span class="text-sm text-blue-600 hover:underline cursor-pointer">続きを読む</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card overflow-hidden">
+                            <div class="h-48 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <span>2024年3月12日</span>
+                                    <span class="mx-2">•</span>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">留学準備</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3">IELTS 7.0を達成する勉強法</h3>
+                                <p class="text-gray-600 mb-4">3ヶ月間の集中学習でIELTS 7.0を達成した具体的な勉強法とおすすめの教材を紹介します...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-green-500 rounded-full"></div>
+                                        <span class="text-sm text-gray-600">佐藤さん</span>
+                                    </div>
+                                    <span class="text-sm text-blue-600 hover:underline cursor-pointer">続きを読む</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card overflow-hidden">
+                            <div class="h-48 bg-gradient-to-r from-purple-400 to-pink-500"></div>
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <span>2024年3月10日</span>
+                                    <span class="mx-2">•</span>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">国別情報</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3">オーストラリア留学のメリット</h3>
+                                <p class="text-gray-600 mb-4">気候、教育制度、ワーキングホリデー制度など、オーストラリア留学の魅力を詳しく解説します...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
+                                        <span class="text-sm text-gray-600">鈴木さん</span>
+                                    </div>
+                                    <span class="text-sm text-blue-600 hover:underline cursor-pointer">続きを読む</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sns-content" class="tab-content hide">
+                    <div class="space-y-6">
+                        <div class="card p-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    山
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h3 class="font-semibold">山田さん</h3>
+                                        <span class="text-sm text-gray-500">1時間前</span>
+                                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">生活情報</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">シドニーの語学学校、最高です！クラスメイトは世界各国から集まっていて、毎日が国際交流の場。放課後はボンダイビーチでサーフィンを楽しんでいます🏄‍♀️ #オーストラリア留学 #シドニー生活</p>
+                                    <div class="grid grid-cols-2 gap-2 mb-4">
+                                        <div class="aspect-square bg-gradient-to-br from-blue-400 to-cyan-300 rounded-lg"></div>
+                                        <div class="aspect-square bg-gradient-to-br from-orange-400 to-red-400 rounded-lg"></div>
+                                    </div>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                            <span>32</span>
+                                        </button>
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12a8 8 0 018-8c4.418 0 8 3.582 8 8z"></path>
+                                            </svg>
+                                            <span>8</span>
+                                        </button>
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                            </svg>
+                                            <span>シェア</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    中
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h3 class="font-semibold">中村さん</h3>
+                                        <span class="text-sm text-gray-500">3時間前</span>
+                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">語学・テスト</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">TOEFLのスピーキングセクション、ついに目標スコア達成！😭 毎日シャドーイングと独り言練習を続けた甲斐がありました。来月からアメリカの大学院に入学します！ #TOEFL #アメリカ留学</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                            <span>45</span>
+                                        </button>
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-4.126-.98L3 20l1.98-5.874A8.955 8.955 0 013 12a8 8 0 018-8c4.418 0 8 3.582 8 8z"></path>
+                                            </svg>
+                                            <span>15</span>
+                                        </button>
+                                        <button type="button" class="flex items-center space-x-1 hover:text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                            </svg>
+                                            <span>シェア</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="create-content" class="tab-content hide">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="card p-6">
+                            <h3 class="text-xl font-semibold mb-6">新しい投稿を作成</h3>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">投稿タイプ</label>
+                                    <select name="post_type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option>SNS投稿</option>
+                                        <option>ブログ記事</option>
+                                        <option>質問</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">カテゴリ</label>
+                                    <select name="post_category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option>体験談</option>
+                                        <option>国別情報</option>
+                                        <option>語学・テスト</option>
+                                        <option>留学準備</option>
+                                        <option>ビザ情報</option>
+                                        <option>生活情報</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">タイトル（ブログ記事の場合）</label>
+                                    <input type="text" name="post_title" placeholder="投稿のタイトルを入力..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                                    <textarea name="post_content" rows="6" placeholder="投稿内容を入力してください..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">画像を追加</label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        <p class="mt-2 text-gray-600">クリックまたはドラッグして画像をアップロード</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">タグ</label>
+                                    <input type="text" name="post_tags" placeholder="カンマ区切りでタグを入力（例：カナダ, 語学留学, IELTS）" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+
+                                <div class="flex justify-end space-x-4">
+                                    <button type="button" class="btn-secondary">下書き保存</button>
+                                    <button type="button" class="btn-primary">投稿する</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section id="quote" class="section hide">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">留学費用見積もり</h1>
+                    <p class="text-gray-600">簡単な質問に答えるだけで、あなたにぴったりの留学プランと費用をお見積もりします</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-600">進捗</span>
+                        <span class="text-sm text-gray-600" id="progress-text">1 / 4</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 25%" id="progress-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Destination -->
+                <div id="step-1" class="step active">
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold mb-6 text-center">どちらの国に留学したいですか？</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDestination('canada')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                                        <span class="text-2xl">🇨🇦</span>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">カナダ</h3>
+                                    <p class="text-gray-600">多文化共生社会で安全な環境。英語とフランス語を学ぶことができます。</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDestination('australia')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <span class="text-2xl">🇦🇺</span>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">オーストラリア</h3>
+                                    <p class="text-gray-600">温暖な気候と豊かな自然。ワーキングホリデー制度も充実しています。</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDestination('usa')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span class="text-2xl">🇺🇸</span>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">アメリカ</h3>
+                                    <p class="text-gray-600">世界最高水準の教育機関。多様な分野で最先端の学習が可能です。</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDestination('uk')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <span class="text-2xl">🇬🇧</span>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">イギリス</h3>
+                                    <p class="text-gray-600">伝統ある教育制度と歴史的な文化。ヨーロッパ各国へのアクセスも良好です。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Duration -->
+                <div id="step-2" class="step">
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold mb-6 text-center">留学期間はどのくらいをお考えですか？</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDuration('short')">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-semibold mb-2">短期留学</h3>
+                                    <p class="text-2xl font-bold text-blue-600 mb-2">1-12週間</p>
+                                    <p class="text-gray-600">語学学習や文化体験を中心とした短期プログラム</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDuration('medium')">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-semibold mb-2">中期留学</h3>
+                                    <p class="text-2xl font-bold text-blue-600 mb-2">3-6ヶ月</p>
+                                    <p class="text-gray-600">本格的な語学学習と現地生活の体験</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectDuration('long')">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-semibold mb-2">長期留学</h3>
+                                    <p class="text-2xl font-bold text-blue-600 mb-2">6ヶ月以上</p>
+                                    <p class="text-gray-600">学位取得や専門的なスキル習得を目指す</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Study Type -->
+                <div id="step-3" class="step">
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold mb-6 text-center">どのような留学をお考えですか？</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectStudyType('language')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">語学留学</h3>
+                                    <p class="text-gray-600">英語力向上を目的とした語学学校での学習</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectStudyType('university')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">大学留学</h3>
+                                    <p class="text-gray-600">学位取得を目的とした大学・大学院での学習</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectStudyType('working')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">ワーキングホリデー</h3>
+                                    <p class="text-gray-600">勉強と働くことを両立する1年間のプログラム</p>
+                                </div>
+                            </div>
+                            <div class="quote-card border-2 border-gray-200 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition-colors" onclick="selectStudyType('internship')">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">インターンシップ</h3>
+                                    <p class="text-gray-600">海外企業での実務経験を積むプログラム</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Personal Info -->
+                <div id="step-4" class="step">
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold mb-6 text-center">お客様情報の入力</h2>
+                        <div class="max-w-2xl mx-auto space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">お名前</label>
+                                    <input type="text" name="quote_name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="田中 太郎">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">フリガナ</label>
+                                    <input type="text" name="quote_furigana" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="タナカ タロウ">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス</label>
+                                <input type="email" name="quote_email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="example@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">電話番号</label>
+                                <input type="tel" name="quote_phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="090-1234-5678">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">年齢</label>
+                                <select name="quote_age" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option>18-25歳</option>
+                                    <option>26-30歳</option>
+                                    <option>31-35歳</option>
+                                    <option>36-40歳</option>
+                                    <option>41歳以上</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">英語レベル</label>
+                                <select name="quote_english_level" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option>初級（TOEIC 300-590）</option>
+                                    <option>中級（TOEIC 600-785）</option>
+                                    <option>上級（TOEIC 800-900）</option>
+                                    <option>ネイティブレベル（TOEIC 900+）</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">留学の目的・ご要望</label>
+                                <textarea name="quote_purpose" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none" placeholder="留学で達成したい目標や特別なご要望があればお聞かせください"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8">
+                    <button type="button" id="prev-btn" class="btn-secondary" onclick="prevStep()" style="display: none;">前へ</button>
+                    <div></div>
+                    <button type="button" id="next-btn" class="btn-primary" onclick="nextStep()">次へ</button>
+                    <button type="button" id="submit-btn" class="btn-primary" onclick="submitQuote()" style="display: none;">見積もりを取得</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other Sections -->
+        <section id="partners" class="section hide">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">提携校紹介</h1>
+                    <p class="text-xl text-gray-600">世界各国の優良教育機関と提携し、質の高い留学プログラムを提供しています</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-red-400 to-pink-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-2">🇨🇦</span>
+                                <h3 class="text-xl font-semibold">バンクーバー語学学校</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">カナダ・バンクーバーにある歴史ある語学学校。多国籍な環境で実践的な英語を学べます。</p>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>設立年:</span>
+                                    <span>1995年</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>学生数:</span>
+                                    <span>約500名</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>日本人比率:</span>
+                                    <span>15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-2">🇦🇺</span>
+                                <h3 class="text-xl font-semibold">シドニー大学付属語学学校</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">オーストラリア最古の大学の付属語学学校。大学進学準備コースも充実しています。</p>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>設立年:</span>
+                                    <span>1988年</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>学生数:</span>
+                                    <span>約800名</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>日本人比率:</span>
+                                    <span>12%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-blue-400 to-purple-500"></div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-2">
+                                <span class="text-2xl mr-2">🇺🇸</span>
+                                <h3 class="text-xl font-semibold">UCLA Extension</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">カリフォルニア大学ロサンゼルス校の語学プログラム。ハリウッドにも近い立地です。</p>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>設立年:</span>
+                                    <span>1975年</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>学生数:</span>
+                                    <span>約1,200名</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>日本人比率:</span>
+                                    <span>8%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="section hide">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">イベント・セミナー</h1>
+                    <p class="text-xl text-gray-600">留学説明会や体験談セミナーを定期的に開催しています</p>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="card p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2">オンライン</span>
+                                    <span class="text-sm text-gray-500">2024年4月15日（月）19:00-20:30</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">カナダ留学説明会</h3>
+                                <p class="text-gray-600 mb-4">カナダの教育制度、生活環境、ビザ手続きについて詳しく説明します。現地の写真や動画も交えてお話しします。</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>📍 オンライン開催</span>
+                                    <span>👥 定員50名</span>
+                                    <span>💰 参加費無料</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 md:ml-6">
+                                <button type="button" class="btn-primary">参加申込</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2">会場開催</span>
+                                    <span class="text-sm text-gray-500">2024年4月20日（土）14:00-16:00</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">留学体験談セミナー</h3>
+                                <p class="text-gray-600 mb-4">実際に留学を経験した先輩たちが、リアルな体験談をお話しします。質疑応答の時間もあります。</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>📍 東京・渋谷会場</span>
+                                    <span>👥 定員30名</span>
+                                    <span>💰 参加費無料</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 md:ml-6">
+                                <button type="button" class="btn-primary">参加申込</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2">オンライン</span>
+                                    <span class="text-sm text-gray-500">2024年4月25日（木）20:00-21:00</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">IELTS対策セミナー</h3>
+                                <p class="text-gray-600 mb-4">IELTS専門講師による効果的な学習法とテスト対策のコツをお教えします。</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>📍 オンライン開催</span>
+                                    <span>👥 定員100名</span>
+                                    <span>💰 参加費1,000円</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 md:ml-6">
+                                <button type="button" class="btn-primary">参加申込</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="learning" class="section hide">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">オンライン英語学習</h1>
+                    <p class="text-xl text-gray-600">留学前の準備から留学中のサポートまで、総合的な英語学習をサポート</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">基礎英文法</h3>
+                        <p class="text-gray-600 mb-4">留学に必要な基礎的な英文法を体系的に学習できます。</p>
+                        <div class="space-y-2 text-sm text-gray-600 mb-4">
+                            <div>📚 12レッスン</div>
+                            <div>⏱️ 各30分</div>
+                            <div>🎯 初級〜中級向け</div>
+                        </div>
+                        <button type="button" class="btn-primary w-full">受講開始</button>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">スピーキング練習</h3>
+                        <p class="text-gray-600 mb-4">AIを活用した発音チェックと会話練習で実践的なスピーキング力を向上。</p>
+                        <div class="space-y-2 text-sm text-gray-600 mb-4">
+                            <div>🎤 音声認識技術</div>
+                            <div>🤖 AI講師との会話</div>
+                            <div>📊 詳細な発音分析</div>
+                        </div>
+                        <button type="button" class="btn-primary w-full">体験する</button>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">IELTS対策</h3>
+                        <p class="text-gray-600 mb-4">留学に必要なIELTSスコア取得のための専門対策コース。</p>
+                        <div class="space-y-2 text-sm text-gray-600 mb-4">
+                            <div>📝 4技能対策</div>
+                            <div>📈 模擬試験</div>
+                            <div>👨‍🏫 専門講師指導</div>
+                        </div>
+                        <button type="button" class="btn-primary w-full">詳細を見る</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auth Sections -->
+        <section id="signin" class="section hide">
+            <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="card p-8">
+                    <h1 class="text-2xl font-bold text-center mb-8">ログイン</h1>
+                    <form class="space-y-6" onsubmit="handleLoginSubmit(event)">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス</label>
+                            <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="example@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">パスワード</label>
+                            <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="パスワードを入力">
+                        </div>
+                        <button type="submit" class="btn-primary w-full">ログイン</button>
+                    </form>
+                    <div class="text-center mt-6">
+                        <a href="#" class="text-blue-600 hover:underline" onclick="showSection('signup')">アカウントをお持ちでない方はこちら</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="signup" class="section hide">
+            <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="card p-8">
+                    <h1 class="text-2xl font-bold text-center mb-8">新規登録</h1>
+                    <form class="space-y-6" onsubmit="handleSignupSubmit(event)">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">お名前</label>
+                            <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="田中 太郎">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス</label>
+                            <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="example@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">パスワード</label>
+                            <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="パスワードを入力">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">パスワード（確認）</label>
+                            <input type="password" name="password_confirm" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="パスワードを再入力">
+                        </div>
+                        <button type="submit" class="btn-primary w-full">アカウント作成</button>
+                    </form>
+                    <div class="text-center mt-6">
+                        <a href="#" class="text-blue-600 hover:underline" onclick="showSection('signin')">既にアカウントをお持ちの方はこちら</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="consultation" class="section hide">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">無料カウンセリング予約</h1>
+                    <p class="text-gray-600">専門カウンセラーがあなたの留学プランについて詳しくご相談に乗ります</p>
+                </div>
+
+                <div class="card p-8">
+                    <form class="space-y-6" onsubmit="handleConsultationSubmit(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">お名前 *</label>
+                                <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="田中 太郎">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">フリガナ *</label>
+                                <input type="text" name="furigana" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="タナカ タロウ">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス *</label>
+                            <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="example@email.com">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">電話番号 *</label>
+                            <input type="tel" name="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="090-1234-5678">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">希望する留学先</label>
+                            <select name="destination" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option>選択してください</option>
+                                <option>カナダ</option>
+                                <option>オーストラリア</option>
+                                <option>アメリカ</option>
+                                <option>イギリス</option>
+                                <option>その他・未定</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">カウンセリング希望日時</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="date" name="consultation_date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <select name="consultation_time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option>時間を選択</option>
+                                    <option>10:00-11:00</option>
+                                    <option>11:00-12:00</option>
+                                    <option>13:00-14:00</option>
+                                    <option>14:00-15:00</option>
+                                    <option>15:00-16:00</option>
+                                    <option>16:00-17:00</option>
+                                    <option>17:00-18:00</option>
+                                    <option>18:00-19:00</option>
+                                    <option>19:00-20:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">カウンセリング方法</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="consultation-type" value="online" class="mr-2">
+                                    <span>オンライン（Zoom）</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="consultation-type" value="office" class="mr-2">
+                                    <span>オフィス来訪（東京・渋谷）</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="consultation-type" value="phone" class="mr-2">
+                                    <span>電話相談</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">相談内容・ご質問</label>
+                            <textarea name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none" placeholder="留学に関するご質問や相談したい内容をお聞かせください"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary w-full">カウンセリングを予約する</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 gradient-bg bg-clip-text text-transparent">StudyAbroad</h3>
+                    <p class="text-gray-300">世界への扉を開く、あなたの留学パートナー</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">サービス</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">留学カウンセリング</a></li>
+                        <li><a href="#" class="hover:text-white">学校手配</a></li>
+                        <li><a href="#" class="hover:text-white">ビザサポート</a></li>
+                        <li><a href="#" class="hover:text-white">現地サポート</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">留学先</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">カナダ</a></li>
+                        <li><a href="#" class="hover:text-white">オーストラリア</a></li>
+                        <li><a href="#" class="hover:text-white">アメリカ</a></li>
+                        <li><a href="#" class="hover:text-white">イギリス</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">お問い合わせ</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p>📞 03-1234-5678</p>
+                        <p>📧 info@studyabroad.com</p>
+                        <p>📍 東京都渋谷区道玄坂1-2-3</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 StudyAbroad. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let quoteData = {
+            destination: '',
+            duration: '',
+            studyType: '',
+            personalInfo: {}
+        };
+        let currentStep = 1;
+
+        // Navigation functions
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.add('hide');
+                section.classList.remove('show');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hide');
+                targetSection.classList.add('show');
+            }
+
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.remove('active');
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        // Community functions
+        function showCommunityTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.add('hide');
+            });
+
+            // Show selected content
+            document.getElementById(tabName + '-content').classList.remove('hide');
+
+            // Update tab styles
+            const tabs = document.querySelectorAll('[onclick*="showCommunityTab"]');
+            tabs.forEach(tab => {
+                tab.className = 'tab-inactive px-4 py-2 rounded-t-lg';
+            });
+
+            // Activate selected tab
+            document.getElementById(tabName + '-tab').className = 'tab-active px-4 py-2 rounded-t-lg';
+        }
+
+        // Quote wizard functions
+        function selectDestination(destination) {
+            quoteData.destination = destination;
+            nextStep();
+        }
+
+        function selectDuration(duration) {
+            quoteData.duration = duration;
+            nextStep();
+        }
+
+        function selectStudyType(studyType) {
+            quoteData.studyType = studyType;
+            nextStep();
+        }
+
+        function nextStep() {
+            if (currentStep < 4) {
+                // Hide current step
+                document.getElementById('step-' + currentStep).classList.remove('active');
+
+                // Show next step
+                currentStep++;
+                document.getElementById('step-' + currentStep).classList.add('active');
+
+                // Update progress
+                updateProgress();
+
+                // Update buttons
+                updateButtons();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                // Hide current step
+                document.getElementById('step-' + currentStep).classList.remove('active');
+
+                // Show previous step
+                currentStep--;
+                document.getElementById('step-' + currentStep).classList.add('active');
+
+                // Update progress
+                updateProgress();
+
+                // Update buttons
+                updateButtons();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = currentStep + ' / 4';
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (currentStep === 1) {
+                prevBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'block';
+            }
+
+            if (currentStep === 4) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function submitQuote() {
+            // Collect form data
+            const formInputs = document.querySelectorAll('#step-4 input, #step-4 select, #step-4 textarea');
+            const personalInfo = {};
+
+            formInputs.forEach(input => {
+                if (input.value) {
+                    personalInfo[input.name || input.placeholder] = input.value;
+                }
+            });
+
+            quoteData.personalInfo = personalInfo;
+
+            // Show success message
+            alert('見積もり依頼を受け付けました！\n24時間以内にメールでご連絡いたします。');
+
+            // Reset form
+            currentStep = 1;
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-1').classList.add('active');
+            updateProgress();
+            updateButtons();
+
+            // Redirect to home
+            showSection('home');
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', filterContent);
+            }
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', filterContent);
+            }
+        }
+
+        function filterContent() {
+            const searchTerm = document.getElementById('search-input')?.value.toLowerCase() || '';
+            const selectedCategory = document.getElementById('category-filter')?.value || '';
+
+            // Filter community posts based on search term and category
+            const posts = document.querySelectorAll('.card');
+            posts.forEach(post => {
+                const postText = post.textContent.toLowerCase();
+                const matchesSearch = !searchTerm || postText.includes(searchTerm);
+                const matchesCategory = !selectedCategory || postText.includes(selectedCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    post.style.display = '';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Form submission handlers
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            // Validate form
+            if (!email || !password) {
+                alert('すべてのフィールドを入力してください。');
+                return;
+            }
+
+            // Here you would normally send the data to a server
+            alert('ログイン処理を実行します...');
+            // In a real application, you would authenticate the user here
+        }
+
+        function handleSignupSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const passwordConfirm = formData.get('password_confirm');
+
+            // Validate form
+            if (!name || !email || !password || !passwordConfirm) {
+                alert('すべてのフィールドを入力してください。');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                alert('パスワードが一致しません。');
+                return;
+            }
+
+            // Here you would normally send the data to a server
+            alert('アカウント作成処理を実行します...');
+            // In a real application, you would create the user account here
+        }
+
+        function handleConsultationSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const name = formData.get('name');
+            const furigana = formData.get('furigana');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+
+            // Validate required fields
+            if (!name || !furigana || !email || !phone) {
+                alert('必須項目をすべて入力してください。');
+                return;
+            }
+
+            // Here you would normally send the data to a server
+            alert('カウンセリング予約を受け付けました！\n担当者から24時間以内にご連絡いたします。');
+
+            // Reset form and redirect to home
+            event.target.reset();
+            showSection('home');
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show home section by default
+            showSection('home');
+
+            // Initialize search functionality
+            initializeSearch();
+
+            // Initialize quote progress
+            updateProgress();
+            updateButtons();
+        });
+    </script>
+</body>
+</html>
