@@ -5,7 +5,9 @@
       "Bash(npx:*)",
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
-      "Bash(killall:*)"
+      "Bash(killall:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
