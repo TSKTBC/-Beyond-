@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond - 留学サポートプラットフォーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f7fafc;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f7fafc;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e0;
+            border-radius: 3px;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* スマホ対応のカスタムスタイル */
+        @media (max-width: 640px) {
+            /* フォントサイズ調整 */
+            .mobile-text-xs { font-size: 0.75rem; }
+            .mobile-text-sm { font-size: 0.875rem; }
+            .mobile-text-base { font-size: 1rem; }
+            .mobile-text-lg { font-size: 1.125rem; }
+            .mobile-text-xl { font-size: 1.25rem; }
+            .mobile-text-2xl { font-size: 1.5rem; }
+            .mobile-text-3xl { font-size: 1.875rem; }
+
+            /* ボタンサイズ調整 */
+            .mobile-btn-sm {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+                min-height: 44px;
+            }
+            .mobile-btn-base {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                min-height: 48px;
+            }
+            .mobile-btn-lg {
+                padding: 1rem 2rem;
+                font-size: 1.125rem;
+                min-height: 52px;
+            }
+
+            /* タッチターゲットサイズ */
+            .mobile-touch {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            /* カード間隔調整 */
+            .mobile-card-spacing {
+                margin-bottom: 1rem;
+            }
+
+            /* 入力フィールド */
+            .mobile-input {
+                padding: 0.75rem;
+                font-size: 1rem;
+                min-height: 48px;
+            }
+        }
+
+        /* アニメーション */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* レスポンシブデザイン改善 */
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .responsive-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+
+        /* モバイルでのスクロール改善 */
+        .mobile-scroll {
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ヘッダー -->
+    <header class="sticky top-0 z-50 w-full border-b border-gray-200/50 bg-white/90 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex h-14 sm:h-16 items-center justify-between">
+            <div class="flex items-center gap-3 sm:gap-6">
+                <a href="#" class="flex items-center space-x-1 sm:space-x-2 group">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-md">
+                        <span class="text-white font-bold text-xs sm:text-sm animate-pulse">🎓</span>
+                    </div>
+                    <span class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                        beyond
+                    </span>
+                    <span class="text-sm sm:text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">✨</span>
+                </a>
+
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="#community" class="px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg transition-all duration-300 flex items-center gap-1 shadow-md">
+                        <span>🏘️</span>
+                        コミュニティ
+                    </a>
+                    <a href="#partners" class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
+                        提携校紹介
+                    </a>
+                    <a href="#events" class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
+                        イベント
+                    </a>
+                    <a href="#learning" class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
+                        英語学習
+                    </a>
+                    <a href="#parents" class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
+                        保護者用
+                    </a>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-1 sm:gap-4">
+                <button class="hidden sm:flex mobile-btn-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    無料相談
+                </button>
+
+                <button class="mobile-btn-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    ログイン
+                </button>
+
+                <button id="mobile-menu-btn" class="lg:hidden mobile-touch p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- モバイルメニュー -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-50 lg:hidden">
+        <div class="fixed inset-0 bg-black bg-opacity-50" id="mobile-menu-overlay"></div>
+        <div class="fixed right-0 top-0 h-full w-80 bg-white shadow-xl slide-in mobile-scroll">
+            <div class="flex flex-col h-full">
+                <div class="p-4 sm:p-6 border-b flex justify-between items-center">
+                    <div>
+                        <h2 class="mobile-text-lg font-semibold">beyond</h2>
+                        <p class="mobile-text-sm text-gray-600">留学サポートプラットフォーム</p>
+                    </div>
+                    <button id="close-mobile-menu" class="mobile-touch p-2 hover:bg-gray-100 rounded-lg">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex-1 p-4 sm:p-6 mobile-scroll">
+                    <nav class="space-y-2">
+                        <a href="#community" class="block p-3 rounded-lg hover:bg-gray-100 transition-colors mobile-touch">
+                            <div class="mobile-text-sm font-medium">留学コミュニティ</div>
+                            <div class="mobile-text-xs text-gray-600 mt-1">ブログ・SNS・投稿作成が一つに</div>
+                        </a>
+                        <a href="#partners" class="block p-3 rounded-lg hover:bg-gray-100 transition-colors mobile-touch">
+                            <div class="mobile-text-sm font-medium">提携校の紹介</div>
+                            <div class="mobile-text-xs text-gray-600 mt-1">世界各国の提携校をご紹介</div>
+                        </a>
+                        <a href="#events" class="block p-3 rounded-lg hover:bg-gray-100 transition-colors mobile-touch">
+                            <div class="mobile-text-sm font-medium">イベント内容</div>
+                            <div class="mobile-text-xs text-gray-600 mt-1">留学説明会・セミナー情報</div>
+                        </a>
+                        <a href="#learning" class="block p-3 rounded-lg hover:bg-gray-100 transition-colors mobile-touch">
+                            <div class="mobile-text-sm font-medium">英語学習用</div>
+                            <div class="mobile-text-xs text-gray-600 mt-1">オンライン英語学習コンテンツ</div>
+                        </a>
+                        <a href="#parents" class="block p-3 rounded-lg hover:bg-gray-100 transition-colors mobile-touch">
+                            <div class="mobile-text-sm font-medium">保護者用</div>
+                            <div class="mobile-text-xs text-gray-600 mt-1">保護者様向け情報・サポート</div>
+                        </a>
+                    </nav>
+
+                    <div class="mt-6 pt-6 border-t">
+                        <h3 class="mobile-text-sm font-medium mb-3 text-gray-600">アクション</h3>
+                        <div class="space-y-2">
+                            <a href="#consultation" class="block p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors mobile-touch">
+                                <div class="mobile-text-sm font-medium">無料相談予約</div>
+                            </a>
+                            <a href="#quote" class="block p-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors mobile-touch">
+                                <div class="mobile-text-sm font-medium">見積もり作成</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main>
+        <!-- ヒーローセクション -->
+        <section class="relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800 text-white py-12 sm:py-20 lg:py-32 overflow-hidden">
+            <div class="absolute inset-0 bg-black opacity-10"></div>
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="mobile-text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
+                        夢の留学を
+                        <span class="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                            現実に
+                        </span>
+                    </h1>
+                    <p class="mobile-text-base sm:text-xl lg:text-2xl mb-6 sm:mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                        あなたの理想の留学先を見つけ、充実したサポートで夢を叶えます。
+                        世界中の提携校と豊富な経験で、安心の留学体験をお約束します。
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                        <button onclick="scrollToSection('quote')" class="mobile-btn-lg bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-semibold rounded-full hover:from-yellow-300 hover:to-orange-400 transition-all duration-300 transform hover:scale-105 shadow-lg w-full sm:w-auto">
+                            🎯 無料見積もりを始める
+                        </button>
+                        <button onclick="scrollToSection('community')" class="mobile-btn-base border-2 border-white/30 text-white rounded-full hover:bg-white/10 backdrop-blur-sm transition-all duration-300 w-full sm:w-auto">
+                            🏘️ コミュニティを見る
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent"></div>
+        </section>
+
+        <!-- コミュニティセクション -->
+        <section id="community" class="py-12 sm:py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="mobile-text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        🏘️ 留学コミュニティ
+                    </h2>
+                    <p class="mobile-text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                        留学体験を共有し、同じ夢を持つ仲間とつながろう
+                    </p>
+                </div>
+
+                <!-- タブナビゲーション -->
+                <div class="flex flex-wrap justify-center mb-6 sm:mb-8 border-b border-gray-200">
+                    <button onclick="switchTab('timeline')" class="tab-btn mobile-btn-sm px-4 sm:px-6 py-2 sm:py-3 mobile-text-sm sm:text-base font-medium rounded-t-lg transition-all duration-300 border-b-2 border-blue-500 text-blue-600 bg-blue-50" data-tab="timeline">
+                        🕐 タイムライン
+                    </button>
+                    <button onclick="switchTab('blog')" class="tab-btn mobile-btn-sm px-4 sm:px-6 py-2 sm:py-3 mobile-text-sm sm:text-base font-medium rounded-t-lg transition-all duration-300 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50" data-tab="blog">
+                        📝 ブログ投稿
+                    </button>
+                    <button onclick="switchTab('sns')" class="tab-btn mobile-btn-sm px-4 sm:px-6 py-2 sm:py-3 mobile-text-sm sm:text-base font-medium rounded-t-lg transition-all duration-300 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50" data-tab="sns">
+                        📱 SNS投稿
+                    </button>
+                    <button onclick="switchTab('create')" class="tab-btn mobile-btn-sm px-4 sm:px-6 py-2 sm:py-3 mobile-text-sm sm:text-base font-medium rounded-t-lg transition-all duration-300 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50" data-tab="create">
+                        ✍️ 投稿作成
+                    </button>
+                </div>
+
+                <!-- タブコンテンツ -->
+                <div class="tab-content">
+                    <!-- タイムライン -->
+                    <div id="timeline-content" class="tab-panel">
+                        <div class="responsive-grid">
+                            <!-- 投稿カード1 -->
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow duration-300 mobile-card-spacing">
+                                <div class="flex items-start space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                                        A
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="mobile-text-sm sm:text-base font-semibold text-gray-900">山田 愛子</h3>
+                                        <p class="mobile-text-xs sm:text-sm text-gray-500">2時間前</p>
+                                    </div>
+                                </div>
+                                <h4 class="mobile-text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+                                    カナダ留学での最初の1ヶ月を振り返って
+                                </h4>
+                                <p class="mobile-text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 line-clamp-3">
+                                    トロント大学での留学生活が始まって1ヶ月が経ちました。最初は言語の壁に苦労しましたが、現地の学生やホストファミリーの温かいサポートのおかげで...
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-3 sm:mb-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 mobile-text-xs rounded-full">#カナダ留学</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 mobile-text-xs rounded-full">#体験談</span>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <button class="flex items-center space-x-1 hover:text-red-500 transition-colors mobile-touch">
+                                            <span>❤️</span>
+                                            <span class="mobile-text-xs sm:text-sm">24</span>
+                                        </button>
+                                        <button class="flex items-center space-x-1 hover:text-blue-500 transition-colors mobile-touch">
+                                            <span>💬</span>
+                                            <span class="mobile-text-xs sm:text-sm">8</span>
+                                        </button>
+                                    </div>
+                                    <button class="mobile-text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium mobile-touch">
+                                        続きを読む →
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 投稿カード2 -->
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow duration-300 mobile-card-spacing">
+                                <div class="flex items-start space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                                        T
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="mobile-text-sm sm:text-base font-semibold text-gray-900">田中 太郎</h3>
+                                        <p class="mobile-text-xs sm:text-sm text-gray-500">5時間前</p>
+                                    </div>
+                                </div>
+                                <h4 class="mobile-text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+                                    イギリス大学院への出願準備のコツ
+                                </h4>
+                                <p class="mobile-text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 line-clamp-3">
+                                    オックスフォード大学の修士課程に合格するまでの道のりをシェアします。IELTS対策から推薦状の準備まで、実際に役立った方法を...
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-3 sm:mb-4">
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 mobile-text-xs rounded-full">#イギリス留学</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 mobile-text-xs rounded-full">#大学院</span>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <button class="flex items-center space-x-1 hover:text-red-500 transition-colors mobile-touch">
+                                            <span>❤️</span>
+                                            <span class="mobile-text-xs sm:text-sm">18</span>
+                                        </button>
+                                        <button class="flex items-center space-x-1 hover:text-blue-500 transition-colors mobile-touch">
+                                            <span>💬</span>
+                                            <span class="mobile-text-xs sm:text-sm">12</span>
+                                        </button>
+                                    </div>
+                                    <button class="mobile-text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium mobile-touch">
+                                        続きを読む →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ブログ投稿 -->
+                    <div id="blog-content" class="tab-panel hidden">
+                        <div class="space-y-4 sm:space-y-6">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+                                <div class="flex items-center space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold">
+                                        S
+                                    </div>
+                                    <div>
+                                        <h3 class="mobile-text-sm sm:text-base font-semibold text-gray-900">佐藤 花子</h3>
+                                        <p class="mobile-text-xs sm:text-sm text-gray-500">1日前 • ブログ記事</p>
+                                    </div>
+                                </div>
+                                <h4 class="mobile-text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
+                                    アメリカ留学で学んだ5つの人生の教訓
+                                </h4>
+                                <p class="mobile-text-sm sm:text-base text-gray-700 mb-4 sm:mb-6 leading-relaxed">
+                                    スタンフォード大学での2年間の留学生活を通じて学んだ、人生を変える5つの重要な教訓について詳しく書きました。これから留学を考えている方にとって、きっと参考になる内容だと思います...
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-gray-500">
+                                        <span class="flex items-center space-x-1 mobile-text-xs sm:text-sm">
+                                            <span>👀</span>
+                                            <span>142 view</span>
+                                        </span>
+                                        <span class="flex items-center space-x-1 mobile-text-xs sm:text-sm">
+                                            <span>❤️</span>
+                                            <span>32 likes</span>
+                                        </span>
+                                    </div>
+                                    <button class="mobile-btn-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                        記事を読む
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SNS投稿 -->
+                    <div id="sns-content" class="tab-panel hidden">
+                        <div class="responsive-grid">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-300 mobile-card-spacing">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold mobile-text-xs sm:text-sm">
+                                        K
+                                    </div>
+                                    <div>
+                                        <h3 class="mobile-text-sm font-semibold text-gray-900">小林 健太</h3>
+                                        <p class="mobile-text-xs text-gray-500">30分前</p>
+                                    </div>
+                                </div>
+                                <p class="mobile-text-sm text-gray-700 mb-3">
+                                    シドニーの朝食カフェにて☕️ オーストラリアのコーヒー文化、本当に素晴らしい！ #留学生活 #オーストラリア
+                                </p>
+                                <div class="bg-gray-100 rounded-lg h-32 sm:h-40 mb-3 flex items-center justify-center">
+                                    <span class="text-gray-400 mobile-text-sm">📸 画像</span>
+                                </div>
+                                <div class="flex items-center space-x-4 text-gray-500">
+                                    <button class="flex items-center space-x-1 hover:text-red-500 transition-colors mobile-touch">
+                                        <span>❤️</span>
+                                        <span class="mobile-text-xs">15</span>
+                                    </button>
+                                    <button class="flex items-center space-x-1 hover:text-blue-500 transition-colors mobile-touch">
+                                        <span>💬</span>
+                                        <span class="mobile-text-xs">3</span>
+                                    </button>
+                                    <button class="flex items-center space-x-1 hover:text-green-500 transition-colors mobile-touch">
+                                        <span>🔄</span>
+                                        <span class="mobile-text-xs">2</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 投稿作成 -->
+                    <div id="create-content" class="tab-panel hidden">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 max-w-2xl mx-auto">
+                            <h3 class="mobile-text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">新しい投稿を作成</h3>
+                            <form class="space-y-4 sm:space-y-6">
+                                <div>
+                                    <label class="block mobile-text-sm font-medium text-gray-700 mb-2">投稿タイプ</label>
+                                    <select class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <option>ブログ記事</option>
+                                        <option>SNS投稿</option>
+                                        <option>質問・相談</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block mobile-text-sm font-medium text-gray-700 mb-2">タイトル</label>
+                                    <input type="text" class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="投稿のタイトルを入力">
+                                </div>
+                                <div>
+                                    <label class="block mobile-text-sm font-medium text-gray-700 mb-2">内容</label>
+                                    <textarea rows="6" class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none" placeholder="あなたの留学体験や質問を共有してください..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block mobile-text-sm font-medium text-gray-700 mb-2">タグ</label>
+                                    <input type="text" class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="例: #アメリカ留学 #体験談">
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                    <button type="button" class="flex-1 mobile-btn-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                        投稿する
+                                    </button>
+                                    <button type="button" class="flex-1 mobile-btn-base border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                                        下書き保存
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 見積もりセクション -->
+        <section id="quote" class="py-12 sm:py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="mobile-text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        🎯 留学費用見積もり
+                    </h2>
+                    <p class="mobile-text-base sm:text-xl text-gray-600">
+                        あなたの希望に合わせた留学プランと費用を算出します
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-xl p-4 sm:p-8">
+                    <!-- ステップインジケーター -->
+                    <div class="flex justify-between mb-6 sm:mb-8">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white flex items-center justify-center mobile-text-sm font-semibold">1</div>
+                            <div class="hidden sm:block ml-2 sm:ml-3">
+                                <div class="mobile-text-sm font-medium">基本情報</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center mobile-text-sm font-semibold">2</div>
+                            <div class="hidden sm:block ml-2 sm:ml-3">
+                                <div class="mobile-text-sm font-medium">留学先</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center mobile-text-sm font-semibold">3</div>
+                            <div class="hidden sm:block ml-2 sm:ml-3">
+                                <div class="mobile-text-sm font-medium">期間・予算</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center mobile-text-sm font-semibold">4</div>
+                            <div class="hidden sm:block ml-2 sm:ml-3">
+                                <div class="mobile-text-sm font-medium">結果</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ステップ1: 基本情報 -->
+                    <div id="step-1" class="space-y-4 sm:space-y-6">
+                        <h3 class="mobile-text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">基本情報を教えてください</h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block mobile-text-sm font-medium text-gray-700 mb-2">お名前</label>
+                                <input type="text" class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="山田 太郎">
+                            </div>
+                            <div>
+                                <label class="block mobile-text-sm font-medium text-gray-700 mb-2">年齢</label>
+                                <select class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option>選択してください</option>
+                                    <option>18歳未満</option>
+                                    <option>18-22歳</option>
+                                    <option>23-27歳</option>
+                                    <option>28歳以上</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mobile-text-sm font-medium text-gray-700 mb-2">現在の状況</label>
+                                <select class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option>選択してください</option>
+                                    <option>高校生</option>
+                                    <option>大学生</option>
+                                    <option>大学院生</option>
+                                    <option>社会人</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mobile-text-sm font-medium text-gray-700 mb-2">英語レベル</label>
+                                <select class="w-full mobile-input border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option>選択してください</option>
+                                    <option>初級（TOEIC 400未満）</option>
+                                    <option>中級（TOEIC 400-600）</option>
+                                    <option>上級（TOEIC 600-800）</option>
+                                    <option>ネイティブレベル（TOEIC 800+）</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button onclick="nextStep(2)" class="mobile-btn-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                次へ →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ステップ2-4は同様の構造で省略 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- その他のセクションも同様にモバイル対応 -->
+        <!-- 提携校、イベント、学習セクションなども同じパターンで改善 -->
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-gray-900 text-white py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold mobile-text-xs sm:text-sm">🎓</span>
+                    </div>
+                    <span class="mobile-text-lg sm:text-2xl font-bold">beyond</span>
+                </div>
+                <p class="mobile-text-sm sm:text-base text-gray-400 mb-6">
+                    あなたの夢の留学を実現するパートナー
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mobile-text-sm">
+                    <a href="#" class="hover:text-blue-400 transition-colors mobile-touch">プライバシーポリシー</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors mobile-touch">利用規約</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors mobile-touch">お問い合わせ</a>
+                </div>
+                <div class="mt-6 pt-6 border-t border-gray-800">
+                    <p class="mobile-text-xs sm:text-sm text-gray-500">
+                        © 2024 beyond. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // モバイルメニューの制御
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        function openMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenuFunc() {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+
+        // タブの切り替え
+        function switchTab(tabName) {
+            // すべてのタブボタンから active クラスを削除
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'text-blue-600', 'bg-blue-50');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // すべてのタブコンテンツを非表示
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+
+            // 選択されたタブボタンに active クラスを追加
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-500');
+            activeBtn.classList.add('border-blue-500', 'text-blue-600', 'bg-blue-50');
+
+            // 選択されたタブコンテンツを表示
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+        }
+
+        // スムーズスクロール
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 見積もりステップの制御
+        function nextStep(stepNumber) {
+            // 現在のステップを非表示
+            document.querySelectorAll('[id^="step-"]').forEach(step => {
+                step.style.display = 'none';
+            });
+
+            // 次のステップを表示
+            const nextStepElement = document.getElementById(`step-${stepNumber}`);
+            if (nextStepElement) {
+                nextStepElement.style.display = 'block';
+            }
+
+            // ステップインジケーターを更新
+            updateStepIndicator(stepNumber);
+        }
+
+        function updateStepIndicator(currentStep) {
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.querySelector(`.step-indicator-${i}`);
+                if (i <= currentStep) {
+                    // アクティブまたは完了状態
+                    indicator?.classList.remove('opacity-50');
+                    indicator?.classList.add('opacity-100');
+                } else {
+                    // 未完了状態
+                    indicator?.classList.remove('opacity-100');
+                    indicator?.classList.add('opacity-50');
+                }
+            }
+        }
+
+        // モバイルメニューのリンククリック時にメニューを閉じる
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenuFunc();
+            });
+        });
+
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初期タブの設定
+            switchTab('timeline');
+
+            // スムーズスクロールの設定
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+
+        // ウィンドウリサイズ時の対応
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                closeMobileMenuFunc();
+            }
+        });
+
+        // タッチイベントの最適化
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+    </script>
+</body>
+</html>

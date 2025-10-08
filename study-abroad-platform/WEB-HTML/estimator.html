@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30秒で無料見積もり - Beyond</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .selected-card {
+            border: 2px solid #10b981;
+            background: #f0fdf4;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-emerald-50/50 via-white to-teal-50/30">
+    <!-- ヒーローセクション -->
+    <section class="py-16 bg-gradient-to-r from-emerald-500 to-teal-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-16 h-16 text-white mx-auto mb-6">
+                <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                30秒で無料見積もり
+            </h1>
+            <p class="text-xl text-emerald-100">
+                あなたの留学プランに必要な費用を今すぐ確認
+            </p>
+        </div>
+    </section>
+
+    <!-- 見積もりフォーム -->
+    <section class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <h2 class="text-2xl font-bold mb-2">留学プランを選択してください</h2>
+                <p class="text-gray-600 mb-8">必要な項目を選択すると、自動的に見積もりが計算されます</p>
+
+                <!-- 留学先の国 -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold flex items-center gap-2 mb-2">
+                        <span class="text-2xl">🌍</span>
+                        留学先の国
+                    </label>
+                    <select id="country" class="w-full h-12 px-4 border rounded-lg">
+                        <option value="">国を選択してください</option>
+                        <option value="usa">🇺🇸 アメリカ</option>
+                        <option value="uk">🇬🇧 イギリス</option>
+                        <option value="canada">🇨🇦 カナダ</option>
+                        <option value="australia">🇦🇺 オーストラリア</option>
+                        <option value="newzealand">🇳🇿 ニュージーランド</option>
+                        <option value="philippines">🇵🇭 フィリピン</option>
+                    </select>
+                </div>
+
+                <!-- 期間 -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold flex items-center gap-2 mb-2">
+                        <span class="text-2xl">📅</span>
+                        留学期間
+                    </label>
+                    <div class="flex gap-4">
+                        <input type="number" id="duration" min="1" max="12" value="3" class="flex-1 h-12 px-4 border rounded-lg text-lg">
+                        <select id="duration-select" class="flex-1 h-12 px-4 border rounded-lg">
+                            <option value="1">1ヶ月</option>
+                            <option value="2">2ヶ月</option>
+                            <option value="3" selected>3ヶ月</option>
+                            <option value="4">4ヶ月</option>
+                            <option value="5">5ヶ月</option>
+                            <option value="6">6ヶ月</option>
+                            <option value="7">7ヶ月</option>
+                            <option value="8">8ヶ月</option>
+                            <option value="9">9ヶ月</option>
+                            <option value="10">10ヶ月</option>
+                            <option value="11">11ヶ月</option>
+                            <option value="12">12ヶ月</option>
+                        </select>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">1〜12ヶ月の範囲で入力または選択してください</p>
+                </div>
+
+                <!-- 宿泊タイプ -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold flex items-center gap-2 mb-2">
+                        <span class="text-2xl">🏠</span>
+                        宿泊タイプ
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="accommodation-card cursor-pointer p-6 border-2 rounded-lg hover:shadow-lg transition-all text-center" data-value="homestay" data-price="80000">
+                            <div class="text-3xl mb-2">🏠</div>
+                            <h3 class="font-bold text-lg mb-1">ホームステイ</h3>
+                            <p class="text-sm text-gray-600 mb-2">現地家庭で生活</p>
+                            <p class="text-emerald-600 font-semibold">¥80,000/月</p>
+                        </div>
+                        <div class="accommodation-card cursor-pointer p-6 border-2 rounded-lg hover:shadow-lg transition-all text-center" data-value="dormitory" data-price="70000">
+                            <div class="text-3xl mb-2">🏠</div>
+                            <h3 class="font-bold text-lg mb-1">学校寮</h3>
+                            <p class="text-sm text-gray-600 mb-2">学校提供の寮</p>
+                            <p class="text-emerald-600 font-semibold">¥70,000/月</p>
+                        </div>
+                        <div class="accommodation-card cursor-pointer p-6 border-2 rounded-lg hover:shadow-lg transition-all text-center" data-value="sharehouse" data-price="60000">
+                            <div class="text-3xl mb-2">🏠</div>
+                            <h3 class="font-bold text-lg mb-1">シェアハウス</h3>
+                            <p class="text-sm text-gray-600 mb-2">複数人でシェア</p>
+                            <p class="text-emerald-600 font-semibold">¥60,000/月</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 保険種類 -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold flex items-center gap-2 mb-2">
+                        <span class="text-2xl">🛡️</span>
+                        保険種類
+                    </label>
+                    <select id="insurance" class="w-full h-12 px-4 border rounded-lg">
+                        <option value="none">選択しない（¥0）</option>
+                        <option value="standard">スタンダード（¥5,000/月）</option>
+                        <option value="advanced">アドバンス（¥8,000/月）</option>
+                        <option value="premium">プレミアム（¥12,000/月）</option>
+                    </select>
+                </div>
+
+                <!-- ビザ代行 -->
+                <div class="mb-8 p-6 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <div>
+                        <label class="text-lg font-semibold cursor-pointer flex items-center gap-2">
+                            <span class="text-2xl">📄</span>
+                            ビザ代行サポート
+                        </label>
+                        <p class="text-sm text-gray-600">専門スタッフがビザ申請を代行（¥50,000）</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="visaSupport" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                    </label>
+                </div>
+
+                <!-- アフターフォロー -->
+                <div class="mb-8 p-6 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <div>
+                        <label class="text-lg font-semibold cursor-pointer flex items-center gap-2">
+                            <span class="text-2xl">👥</span>
+                            アフターフォローサポート
+                        </label>
+                        <p class="text-sm text-gray-600">24時間日本語サポート（¥30,000/月）</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="afterCare" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                    </label>
+                </div>
+
+                <!-- 英語学習 -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold flex items-center gap-2 mb-2">
+                        <span class="text-2xl">📚</span>
+                        英語学習サポート
+                    </label>
+                    <select id="englishLearning" class="w-full h-12 px-4 border rounded-lg">
+                        <option value="free">無料プラン（基本教材のみ）</option>
+                        <option value="paid">有償プラン（¥15,000/月 - 1対1レッスン付き）</option>
+                    </select>
+                </div>
+
+                <!-- 見積もりボタン -->
+                <button onclick="calculateEstimate()" class="w-full h-14 text-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-lg shadow-lg transition-all">
+                    💰 見積もりを計算する
+                </button>
+
+                <!-- 見積もり結果 -->
+                <div id="result" class="mt-8 hidden">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg p-8 text-center">
+                        <p class="text-lg mb-2">概算費用</p>
+                        <p id="totalCost" class="text-5xl font-extrabold mb-4">¥0</p>
+                        <p class="text-emerald-100 mb-6"><span id="durationDisplay">3</span>ヶ月間の合計金額（税込）</p>
+                        <a href="index.html#consultation" class="inline-block px-8 py-4 bg-white text-emerald-600 font-bold rounded-lg hover:bg-emerald-50 transition-all">
+                            この内容で無料相談を申し込む
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 宿泊タイプの選択
+        let selectedAccommodation = null;
+        document.querySelectorAll('.accommodation-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.accommodation-card').forEach(c => c.classList.remove('selected-card'));
+                this.classList.add('selected-card');
+                selectedAccommodation = this.dataset.value;
+            });
+        });
+
+        // 期間の同期
+        document.getElementById('duration').addEventListener('input', function() {
+            document.getElementById('duration-select').value = this.value;
+        });
+        document.getElementById('duration-select').addEventListener('change', function() {
+            document.getElementById('duration').value = this.value;
+        });
+
+        // 見積もり計算
+        function calculateEstimate() {
+            const country = document.getElementById('country').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            const insurance = document.getElementById('insurance').value;
+            const visaSupport = document.getElementById('visaSupport').checked;
+            const afterCare = document.getElementById('afterCare').checked;
+            const englishLearning = document.getElementById('englishLearning').value;
+
+            if (!country || !selectedAccommodation) {
+                alert('国と宿泊タイプを選択してください');
+                return;
+            }
+
+            let total = 0;
+
+            // 基本料金（国別）
+            const countryBaseCost = {
+                'usa': 300000,
+                'uk': 280000,
+                'canada': 250000,
+                'australia': 260000,
+                'newzealand': 230000,
+                'philippines': 150000
+            };
+            total += countryBaseCost[country] * duration;
+
+            // 宿泊タイプ
+            const accommodationCost = {
+                'homestay': 80000,
+                'dormitory': 70000,
+                'sharehouse': 60000
+            };
+            total += accommodationCost[selectedAccommodation] * duration;
+
+            // 保険
+            const insuranceCost = {
+                'none': 0,
+                'standard': 5000 * duration,
+                'advanced': 8000 * duration,
+                'premium': 12000 * duration
+            };
+            total += insuranceCost[insurance];
+
+            // ビザ代行
+            if (visaSupport) total += 50000;
+
+            // アフターフォロー
+            if (afterCare) total += 30000 * duration;
+
+            // 英語学習
+            if (englishLearning === 'paid') total += 15000 * duration;
+
+            // 結果表示
+            document.getElementById('totalCost').textContent = '¥' + total.toLocaleString();
+            document.getElementById('durationDisplay').textContent = duration;
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

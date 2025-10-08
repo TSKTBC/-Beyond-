@@ -1,0 +1,55 @@
+{
+    "mcpServers": {
+      "filesystem": {
+        "command": "node",
+        "args": ["-e", "import('fs/promises').then(fs => fs)"]
+      },
+      "terminal": { "command": "bash", "args": ["-l"] },
+      "npm": { "command": "npm" },
+      "http": { "command": "curl", "args": ["-s"] },
+  
+      "supabase": {
+        "command": "node",
+        "args": ["scripts/supabase-mcp.js"]
+      },
+      "stripe": {
+        "command": "node",
+        "args": ["scripts/stripe-mcp.js"]
+      },
+      "notion": {
+        "command": "node",
+        "args": ["scripts/notion-mcp.js"]
+      },
+      "context": {
+        "command": "node",
+        "args": ["scripts/context.js"]
+      },
+      "playwright": {
+        "command": "node",
+        "args": ["scripts/playwright-mcp.js"]
+      }
+    },
+  
+    "permissions": {
+      "filesystem": {
+        "allowedPaths": ["/Users/tasuku1028/web/study-abroad-platform"],
+        "allowWrite": true
+      },
+      "terminal": { "allowAll": true },
+      "npm": { "allowAll": true },
+      "supabase": { "allowAll": true },
+      "stripe": { "allowAll": true },
+      "notion": { "allowAll": true },
+      "playwright": { "allowAll": true }
+    },
+  
+    "metadata": {
+      "projectName": "study-abroad-platform",
+      "description": "Next.js 留学エージェントサイト用のClaude連携MCP設定",
+      "author": "tasuku1028",
+      "framework": "Next.js 14 / TypeScript / TailwindCSS",
+      "runtime": "Node.js >=18",
+      "created": "2025-10-05"
+    }
+  }
+  

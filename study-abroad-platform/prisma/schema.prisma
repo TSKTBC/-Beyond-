@@ -1,0 +1,353 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ユーザー
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // リレーション
+  quotations    Quotation[]
+  inquiries     Inquiry[]
+  applications  Application[]
+  reviews       Review[]
+
+  @@index([email])
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+  CONSULTANT
+}
+
+// 学校
+model School {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  description     String    @db.Text
+  country         String
+  city            String
+  address         String?
+  website         String?
+  email           String?
+  phone           String?
+
+  // 統計
+  stats           Json      // { averageRating, reviewCount, studentCount }
+
+  // 画像
+  images          String[]  // S3 URLs
+
+  // メタデータ
+  featured        Boolean   @default(false)
+  verified        Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // リレーション
+  programs        Program[]
+  pricing         Pricing?
+  availability    Availability[]
+  reviews         Review[]
+  quotations      Quotation[]
+
+  @@index([country, city])
+  @@index([featured])
+}
+
+// プログラム
+model Program {
+  id              String    @id @default(cuid())
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id])
+
+  name            String
+  type            ProgramType
+  description     String    @db.Text
+  duration        Json      // { min: 2, max: 52, unit: 'weeks' }
+  requirements    Json      // { minAge, englishLevel, etc. }
+
+  @@index([schoolId, type])
+}
+
+enum ProgramType {
+  GENERAL_ENGLISH
+  BUSINESS_ENGLISH
+  EXAM_PREP
+  UNIVERSITY_PATHWAY
+  INTERNSHIP
+}
+
+// 料金設定
+model Pricing {
+  id              String    @id @default(cuid())
+  schoolId        String    @unique
+  school          School    @relation(fields: [schoolId], references: [id])
+
+  currency        String    // USD, CAD, GBP, etc.
+  basePrice       Int       // 週あたり基本料金（cents）
+
+  fees            Json      // { registration, materials, technology }
+  accommodation   Json      // { homestay: { price, deposit }, dormitory: {...} }
+
+  discounts       Discount[]
+
+  updatedAt       DateTime  @updatedAt
+}
+
+// 割引
+model Discount {
+  id              String    @id @default(cuid())
+  pricingId       String
+  pricing         Pricing   @relation(fields: [pricingId], references: [id])
+
+  name            String
+  type            DiscountType
+  value           Int       // パーセントまたは固定額（cents）
+
+  conditions      Json      // { minWeeks, startDateRange, promoCode, etc. }
+  stackable       Boolean   @default(false)
+  priority        Int       @default(0)
+
+  validFrom       DateTime
+  validUntil      DateTime?
+
+  @@index([pricingId])
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+  FREE_WEEKS
+}
+
+// 空き状況
+model Availability {
+  id              String    @id @default(cuid())
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id])
+
+  date            DateTime  @db.Date
+  seats           Int
+  waitlist        Int       @default(0)
+
+  @@unique([schoolId, date])
+  @@index([date])
+}
+
+// 見積
+model Quotation {
+  id              String    @id @default(cuid())
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id])
+
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id])
+  weeks           Int
+  startDate       DateTime  @db.Date
+  accommodationType String
+  options         Json
+
+  totalAmount     Int       // JPY (cents)
+  currency        String    // 元通貨
+  exchangeRate    Float
+  breakdown       Json
+
+  pdfUrl          String?
+  status          QuoteStatus @default(DRAFT)
+  validUntil      DateTime
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+enum QuoteStatus {
+  DRAFT
+  SAVED
+  SHARED
+  CONVERTED
+}
+
+// 問い合わせ
+model Inquiry {
+  id              String    @id @default(cuid())
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id])
+
+  name            String
+  email           String
+  phone           String?
+  message         String    @db.Text
+
+  schoolIds       String[]  // 興味のある学校
+  preferredContact String   // email, phone, line
+
+  status          InquiryStatus @default(NEW)
+  assignedTo      String?   // 担当者ID
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CONVERTED
+  CLOSED
+}
+
+// 予約（相談）
+model Booking {
+  id              String    @id @default(cuid())
+  userId          String?
+
+  name            String
+  email           String
+  phone           String?
+
+  scheduledAt     DateTime
+  duration        Int       @default(30) // 分
+  timezone        String    @default("Asia/Tokyo")
+
+  meetingUrl      String?   // Zoom URL
+  googleEventId   String?   // Google Calendar連携
+
+  notes           String?   @db.Text
+  status          BookingStatus @default(SCHEDULED)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([scheduledAt])
+}
+
+enum BookingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// 申込
+model Application {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+
+  schoolId        String
+  quotationId     String?
+
+  status          ApplicationStatus @default(DRAFT)
+  currentStep     Int       @default(1)
+
+  personalInfo    Json
+  documents       Json      // { passport: { url, status }, etc. }
+
+  contractUrl     String?
+  contractSignedAt DateTime?
+
+  paymentStatus   PaymentStatus @default(PENDING)
+  paidAmount      Int       @default(0)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId, status])
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PARTIAL
+  PAID
+  REFUNDED
+}
+
+// レビュー
+model Review {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id])
+
+  rating          Int       // 1-5
+  title           String?
+  comment         String    @db.Text
+  photos          String[]  // S3 URLs
+
+  helpful         Int       @default(0)
+  verified        Boolean   @default(false) // 実際に通学したか確認済み
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([schoolId, rating])
+}
+
+// 分析イベント
+model AnalyticsEvent {
+  id              String    @id @default(cuid())
+
+  event           String
+  userId          String?
+  sessionId       String
+
+  properties      Json
+  timestamp       DateTime  @default(now())
+
+  @@index([event, timestamp])
+  @@index([userId])
+}
+
+// 監査ログ
+model AuditLog {
+  id              String    @id @default(cuid())
+
+  userId          String
+  action          String    // CREATE, UPDATE, DELETE
+  resource        String    // User, School, Application
+  resourceId      String
+
+  before          Json?
+  after           Json?
+
+  ipAddress       String?
+  userAgent       String?
+
+  createdAt       DateTime  @default(now())
+
+  @@index([userId, createdAt])
+  @@index([resource, resourceId])
+}
